@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Models\AnalysisTableMetadata;
@@ -12,6 +11,7 @@ use App\Http\Requests\DataAnalysisRequest;
 
 use App\Actions\DataAnalysis\NormalizeDataAction;
 use App\Actions\DataAnalysis\NormalizeDefinitionAction;
+use App\Actions\DataAnalysis\GenerateDefinitionAction;
 use App\Actions\DataAnalysis\CreateUniqueTableNameAction;
 use App\Actions\DataAnalysis\CreateAnalysisTableAction;
 use App\Actions\DataAnalysis\InsertAnalysisDataAction;
@@ -20,17 +20,23 @@ class DataAnalysisController extends Controller
 {
     public function inputData(
         DataAnalysisRequest $request, 
-        NormalizeDefinitionAction $normalizeDefinitionAction, 
-        NormalizeDataAction $normalizeDataAction,
-        CreateUniqueTableNameAction $createUniqueTableNameAction,
         CreateAnalysisTableAction $createAnalysisTableAction,
-        InsertAnalysisDataAction $insertAnalysisDataAction
+        CreateUniqueTableNameAction $createUniqueTableNameAction,
+        GenerateDefinitionAction $generateDefinitionAction,
+        InsertAnalysisDataAction $insertAnalysisDataAction,
+        NormalizeDataAction $normalizeDataAction,
+        NormalizeDefinitionAction $normalizeDefinitionAction, 
     ): JsonResponse
     {
 
         $validated = $request->validated();
-        $originalDefinition = $validated['definition'];
         $originalData = $validated['data'];
+        
+        if (!isset($validated['definition'])) {
+            $originalDefinition = $generateDefinitionAction->invoke($originalData);
+        } else {
+            $originalDefinition = $validated['definition'];
+        }
 
         $definition = $normalizeDefinitionAction->invoke($originalDefinition);
         $data = $normalizeDataAction->invoke($originalData, $originalDefinition);
