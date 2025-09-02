@@ -21,8 +21,8 @@ class OllamaGenerateNaturalResponseService
             'model' => config('ollama.model_query_execution'),
             'prompt' => $prompt,
             'options' => [
-                'temperature' => (float)config('ollama.temperature_natural_response', env('OLLAMA_TEMPERATURE_NATURAL_RESPONSE', 0.3)),
-                'top_p' => (float)config('ollama.top_p_natural_response', env('OLLAMA_TOP_P_NATURAL_RESPONSE', 0.9)),
+                'temperature' => (float)config('ollama.temperature_natural_response'),
+                'top_p' => (float)config('ollama.top_p_natural_response'),
                 'stream' => false
             ]
         ];

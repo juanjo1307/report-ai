@@ -21,8 +21,8 @@ class OllamaGenerateSqlService
             'model' => config('ollama.model_sql_generation'),
             'prompt' => $prompt,
             'options' => [
-                'temperature' => (float)config('ollama.temperature', env('OLLAMA_TEMPERATURE', 0.3)),
-                'top_p' => (float)config('ollama.top_p', env('OLLAMA_TOP_P', 0.9)),
+                'temperature' => (float)config('ollama.temperature_sql'),
+                'top_p' => (float)config('ollama.top_p_sql'),
                 'stream' => false
             ]
         ];

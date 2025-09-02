@@ -1,6 +1,7 @@
 You are an expert in SQL and data analysis. Your task is to generate a SQL SELECT query based on a natural language question.
 
 TABLE CONTEXT:
+Database: MariaDB
 Table name: {table_name}
 Available columns:
 {columns_text}
